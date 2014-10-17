@@ -1,7 +1,10 @@
 function mergeSort(array){
   
   function merge(leftHalf, rightHalf){
-    var leftIndex, rightIndex, results, remaining;
+    var leftIndex = 0;
+    var rightIndex = 0;
+    var results = [];
+    var halfWithLeftovers;
 
     while( leftIndex < leftHalf.length && rightIndex < rightHalf.length ){
 
@@ -13,8 +16,13 @@ function mergeSort(array){
 
     }
 
-    remainingHalf = leftIndex === leftHalf.length ? rightHalf.slice(rightIndex) : leftHalf(leftIndex);
-    return results.concat(remaining);
+    if( leftIndex === leftHalf.length ){
+      halfWithLeftovers = rightHalf.slice(rightIndex);
+    }else{
+      halfWithLeftovers = leftHalf.slice(leftIndex);
+    }
+
+    return results.concat(halfWithLeftovers);
   }
 
   if( array.length <= 1 ) return array;
