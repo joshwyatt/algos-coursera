@@ -1,4 +1,6 @@
 function mergeSortAndCountInversions(array){
+
+  var numberOfInversions = 0;
   
   function mergeAndCountInversions(leftHalf, rightHalf){
     var leftIndex = 0;
@@ -12,6 +14,7 @@ function mergeSortAndCountInversions(array){
         results.push(leftHalf[leftIndex++]);
       }else{
         results.push(rightHalf[rightIndex++]);
+        numberOfInversions += leftHalf.length - leftIndex;
       }
 
     }
@@ -25,18 +28,25 @@ function mergeSortAndCountInversions(array){
     return results.concat(halfWithLeftovers);
   }
 
-  if( array.length <= 1 ) return array;
+  function divideIntoSortedArrays(array){
 
-  var centerIndex, leftHalf, rightHalf, sortedLeftHalf, sortedRightHalf;
+    if( array.length <= 1 ) return array;
 
-  //split array into 2 halves
-  centerIndex = Math.ceil(array.length / 2);
-  leftHalf = array.slice(0, centerIndex);
-  rightHalf = array.slice(centerIndex);
+    var centerIndex, leftHalf, rightHalf, sortedLeftHalf, sortedRightHalf;
 
-  sortedLeftHalf = mergeSortAndCountInversions(leftHalf);
-  sortedRightHalf = mergeSortAndCountInversions(rightHalf);
+    //split array into 2 halves
+    centerIndex = Math.ceil(array.length / 2);
+    leftHalf = array.slice(0, centerIndex);
+    rightHalf = array.slice(centerIndex);
 
-  return mergeAndCountInversions(sortedLeftHalf, sortedRightHalf);
+    sortedLeftHalf = divideIntoSortedArrays(leftHalf);
+    sortedRightHalf = divideIntoSortedArrays(rightHalf);
+
+    return mergeAndCountInversions(sortedLeftHalf, sortedRightHalf);
+
+  }
+
+  divideIntoSortedArrays(array);
+  return numberOfInversions;
 
 }
