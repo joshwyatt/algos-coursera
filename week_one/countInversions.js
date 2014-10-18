@@ -45,7 +45,6 @@
     }
 
     divideIntoSortedArrays(array);
-    // return divideIntoSortedArrays(array);
     return numberOfInversions;
 
   }
