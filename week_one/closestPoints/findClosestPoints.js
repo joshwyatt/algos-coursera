@@ -1,8 +1,11 @@
 ;(function(){
   function findClosestPoints(points){
-    var closestPoints;
+    var closestPointsDetails = {
+      closestPoints: [undefined, undefined],
+      distance: undefined
+    };
 
-    function mergeSortAndFindClosest(leftPoints, rightPoints){
+    function mergeSortAndFindClosest(processedLeftPoints, processedRightPoints){
 
       var halfWithLeftovers;
       var xLeftIndex = 0;
@@ -21,16 +24,30 @@
 
     }
     function recursivelySubdivide(points){
-      if( points.length <= 1 ) return points;
+      if( points.length <= 1 ){
+        return {
+          sortedByX: points,
+          sortedByY: points,
+          closestPoints: undefined,
+          closestDistance: undefined
+        };
+      }
 
       var centerIndex, leftHalf, rightHalf, sortedLeftHalf, sortedRightHalf;
 
       centerIndex = Math.ceil(points.length / 2);
       leftHalf = points.slice(0, centerIndex);
       rightHalf = points.slice(centerIndex);
+
+      processedLeftHalf = recursivelySubdivide(leftHalf);
+      processedRightHalf = recursivelySubdivide(rightHalf);
+
+      // mergeSortAndFindClosest(processedLeftHalf, processedRightHalf);
     }
 
-    return closestPoints;
+    recursivelySubdivide(points);
+    console.log(closestPointsDetails.closestPoints);
+    return closestPointsDetails.closestPoints;
   }
 
   module.exports = findClosestPoints;
