@@ -11,16 +11,35 @@
   }
 
   TwoDGraph.prototype.generatePoints = function(){
-    var randomX;
+    var randomX, randomY;
     var alreadyUsedXs = {};
     var alreadyUsedYs = {};
     var points = [];
 
     var numberOfPoints = this.numberOfPoints;
 
+    function generateRandomX(min, max){
+      return Math.floor(Math.random() * (max - min)) + parseInt(min);
+    }
+
+    function generateRandomY(min, max){
+      return Math.floor(Math.random() * (max - min)) + parseInt(min);
+    }
+
     while( numberOfPoints-- ){
-      randomX = Math.floor(Math.random() * (this.xMax - this.xMin)) + parseInt(this.xMin);
-      randomY = Math.floor(Math.random() * (this.yMax - this.yMin)) + parseInt(this.yMin);
+
+      randomX = generateRandomX(this.xMin, this.xMax);
+      while( alreadyUsedXs.hasOwnProperty(randomX) ){
+        randomX = generateRandomX(this.xMin, this.xMax);
+      }
+      alreadyUsedXs[randomX] = true;
+
+      randomY = generateRandomY(this.yMin, this.yMax);
+      while( alreadyUsedYs.hasOwnProperty(randomY) ){
+        randomY = generateRandomY(this.yMin, this.yMax);
+      }
+      alreadyUsedYs[randomY] = true;
+
       console.log([randomX, randomY]);
     }
 
