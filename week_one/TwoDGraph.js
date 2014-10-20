@@ -19,11 +19,11 @@
     var numberOfPoints = this.numberOfPoints;
 
     function generateRandomX(min, max){
-      return Math.floor(Math.random() * (max - min)) + parseInt(min);
+      return Math.floor(Math.random() * (max - min)) + parseInt(min, 10);
     }
 
     function generateRandomY(min, max){
-      return Math.floor(Math.random() * (max - min)) + parseInt(min);
+      return Math.floor(Math.random() * (max - min)) + parseInt(min, 10);
     }
 
     while( numberOfPoints-- ){
