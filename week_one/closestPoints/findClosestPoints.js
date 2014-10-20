@@ -5,7 +5,7 @@
       distance: undefined
     };
 
-    function mergeSortAndFindClosest(processedLeftPoints, processedRightPoints){
+    function mergeSortAndFindClosest(leftPoints, rightPoints){
 
       var halfWithLeftovers;
       var xLeftIndex = 0;
@@ -16,11 +16,51 @@
       var results = {
         sortedByX: [],
         sortedByY: [],
-        closestPoints: [],
-        closestDistance: 0
+        closestPoints: undefined,
+        closestDistance: undefined
       };
 
       //if single points, calculate distance between the two
+      if( leftPoints.sortedByX.length === 1 && rightPoints.sortedByX.length === 1 ){
+        var onlyXPoint = leftPoints.sortedByX[0];
+        var onlyYPoint = rightPoints.sortedByY[0];
+        results.closestDistance = calculateDistance(onlyXPoint, onlyYPoint);
+        results.closestPoints = [onlyXPoint, onlyYPoint];
+      }
+
+      //merge into sorted by x
+      while( xLeftIndex < leftPoints.sortedByX.length && xRightIndex < rightPoints.sortedByX.length ){
+        if( leftPoints.sortedByX[xLeftIndex][0] < rightPoints.sortedByX[xRightIndex][0] ){
+          results.sortedByX.push(leftPoints.sortedByX[xLeftIndex++]);
+        }else{
+          results.sortedByX.push(rightPoints.sortedByX[xRightIndex++]);
+        }
+
+        if( xLeftIndex === leftPoints.sortedByX.length ){
+          halfWithLeftovers = rightPoints.sortedByX.slice(xRightIndex);
+        }else{
+          halfWithLeftovers = leftPoints.sortedByX.slice(xLeftIndex);
+        }
+
+        results.sortedByX.concat(halfWithLeftovers);
+      }
+
+      //merge into sorted by y
+      while( yLeftIndex < leftPoints.sortedByY.length && yRightIndex < rightPoints.sortedByY.length ){
+        if( leftPoints.sortedByY[yLeftIndex][1] < rightPoints.sortedByY[yRightIndex][1] ){
+          results.sortedByY.push(leftPoints.sortedByY[yLeftIndex++]);
+        }else{
+          results.sortedByY.push(rightPoints.sortedByY[yRightIndex++]);
+        }
+
+        if( yLeftIndex === leftPoints.sortedByY.length ){
+          halfWithLeftovers = rightPoints.sortedByY.slice(yRightIndex);
+        }else{
+          halfWithLeftovers = leftPoints.sortedByY.slice(yLeftIndex);
+        }
+
+        results.sortedByY.concat(halfWithLeftovers);
+      }
 
       return results;
 
@@ -44,7 +84,7 @@
       processedLeftHalf = recursivelySubdivide(leftHalf);
       processedRightHalf = recursivelySubdivide(rightHalf);
 
-      mergeSortAndFindClosest(processedLeftHalf, processedRightHalf);
+      return mergeSortAndFindClosest(processedLeftHalf, processedRightHalf);
     }
 
     function calculateDistance(pointOne, pointTwo){
