@@ -11,10 +11,17 @@
   }
 
   TwoDGraph.prototype.generatePoints = function(){
+    var randomX;
+    var alreadyUsedXs = {};
+    var alreadyUsedYs = {};
     var points = [];
 
-    while( this.numberOfPoints-- ){
-      console.log(this.numberOfPoints);
+    var numberOfPoints = this.numberOfPoints;
+
+    while( numberOfPoints-- ){
+      randomX = Math.floor(Math.random() * (this.xMax - this.xMin)) + parseInt(this.xMin);
+      randomY = Math.floor(Math.random() * (this.yMax - this.yMin)) + parseInt(this.yMin);
+      console.log([randomX, randomY]);
     }
 
     return points;
