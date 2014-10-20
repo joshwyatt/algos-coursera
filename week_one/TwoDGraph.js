@@ -7,6 +7,7 @@
     this.xMax = xMax;
     this.yMax = yMax;
     this.numberOfPoints = numberOfPoints;
+    this.points = this.generatePoints();
 
   }
 
@@ -40,7 +41,7 @@
       }
       alreadyUsedYs[randomY] = true;
 
-      console.log([randomX, randomY]);
+      points.push([randomX, randomY]);
     }
 
     return points;

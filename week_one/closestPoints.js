@@ -13,5 +13,5 @@
   var numberOfPoints = process.argv[6];
 
   var twoDGraph = new TwoDGraph(xMin, yMin, xMax, yMax, numberOfPoints);
-  twoDGraph.generatePoints();
+  console.log(twoDGraph.points);
 })();
