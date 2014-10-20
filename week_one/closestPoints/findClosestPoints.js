@@ -93,8 +93,8 @@
       return Math.sqrt(Math.pow(distanceBetweenX, 2) + Math.pow(distanceBetweenY, 2));
     }
 
-    recursivelySubdivide(points);
-    console.log(closestPointsDetails.closestPoints);
+    closestPointsDetails = recursivelySubdivide(points);
+    console.log(closestPointsDetails);
     return closestPointsDetails.closestPoints;
   }
 
