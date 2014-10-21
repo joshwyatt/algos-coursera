@@ -84,7 +84,7 @@
     }
 
     closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
-    closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf);
+    closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints);
 
     results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
     results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
@@ -93,7 +93,7 @@
     return results;
   }
 
-  function calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf){
+  function calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints){
     var lastLeftIndex, verticalMiddle, xAxisMax, xAxisMin, leftYPoints, rightYPoints,
         leftPointsToEvaluate, rightPointsToEvaluate, pointsToEvaluate;
 
@@ -116,7 +116,7 @@
 
     pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
 
-    closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf);
+    closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf, nearestPoints);
     return closestDistanceBetweenHalves;
 
   }
@@ -171,8 +171,9 @@
     return results;
   }
 
-  function iterateUpToSevenAway(points, currentlyShortestDistance){
+  function iterateUpToSevenAway(points, currentlyShortestDistance, nearestPoints){
     var i, j, pointA, pointB, distance;
+    var result;
 
     for(i = 0; i < points.length - 7; i++){
       for(j = i; j < i + 8; j++){
@@ -180,11 +181,13 @@
         pointB = points[j];
         distance = calculateDistance(pointA, pointB);
         if( distance < currentlyShortestDistance ){
-          currentlyShortestDistance = distance;
+          result = {};
+          result.currentlyShortestDistance = distance;
+          result.nearestPoints = [pointA, pointB];
         }
       }
     }
-    return currentlyShortestDistance;
+    return result ? result : null;
   }
 
   module.exports = findClosestPoints;
