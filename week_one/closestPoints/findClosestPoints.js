@@ -1,5 +1,7 @@
 ;(function(){
 
+  var mergeSortByXorY = require('./mergeSortByXorY.js');
+
   function findClosestPoints(points){
     // preprocess by sorting all points by x
     var pointsSortedByX = mergeSortByXorY(points, 'x');
