@@ -62,6 +62,22 @@
     return merge(processedLeftHalf, processedRightHalf);
   }
 
+  function spliceAppropriateYs(xPoints, yPoints){
+    var appropriateYs;
+    var xs = {};
+
+    xPoints.forEach(point, storePointInHash);
+    return yPoints.reduce(isYPointInXHash, []);
+
+    function storePointInHash(point){
+      xs[point] = true;
+    }
+
+    function isYPointInXHash(yPoint){
+      return xs.hasOwnProperty(yPoint);
+    }
+  }
+
   function merge(leftHalf, rightHalf){
     // initiate variables
     var closestInOneHalf, closestDistanceBetweenHalves, closestPoints;
@@ -75,18 +91,18 @@
 
     // calculate closest distance and points already discovered in left and right halves
     if( leftHalf.closestDistance < rightHalf.closestDistance ){
-      closestDistanceBetweenHalves = leftHalf.closestDistance;
+      closestInOneHalf = leftHalf.closestDistance;
       closestPoints = leftHalf.closestPoints;
     }else{
-      closestDistanceBetweenHalves = rightHalf.closestDistance;
+      closestInOneHalf = rightHalf.closestDistance;
       closestPoints = rightHalf.closestPoints;
     }
 
     results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
+    //THESE WILL PROBABLY NEED SORTING
     results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
 
-    closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
-    closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints);
+    closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, closestPoints);
 
 
     if( closestDistanceBetweenHalves ){
@@ -97,7 +113,7 @@
     return results;
   }
 
-  function calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints){
+  function calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, closestPoints){
     var lastLeftIndex, verticalMiddle, xAxisMax, xAxisMin, leftYPoints, rightYPoints,
         leftPointsToEvaluate, rightPointsToEvaluate, pointsToEvaluate;
 
@@ -127,22 +143,6 @@
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
     var x = point[0];
     return x > xAxisMin && x < xAxisMax;
-  }
-
-  function spliceAppropriateYs(xPoints, yPoints){
-    var appropriateYs;
-    var xs = {};
-
-    xPoints.forEach(point, storePointInHash);
-    return yPoints.reduce(isYPointInXHash, []);
-
-    function storePointInHash(point){
-      xs[point] = true;
-    }
-
-    function isYPointInXHash(yPoint){
-      return xs.hasOwnProperty(yPoint);
-    }
   }
 
   function calculateDistance(pointOne, pointTwo){
