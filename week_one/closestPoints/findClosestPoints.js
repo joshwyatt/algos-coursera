@@ -9,58 +9,57 @@
     var pointsSortedByY = mergeSortByXorY(points, 'y');
 
     // begin divide part of divide and conquer for calculating distances
-    function divideOnXAndMerge(pointsByX, pointsByY){
-      // initialize variables
-      var distanceA, distanceB, distanceC, closestDistance, closestPoints,
-          centerIndex, leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY,
-          processedLeftHalf, processedRightHalf;
+    return divideOnXAndMerge(pointsSortedByY, pointsSortedByY);
+  }
 
-      // if array only contains two or three points
-      if( pointsByX.length <= 3 ){
-        // calculate the shortest point and return
-        if( pointsByX.length === 3){
+  function divideOnXAndMerge(pointsByX, pointsByY){
+    // initialize variables
+    var distanceA, distanceB, distanceC, closestDistance, closestPoints,
+        centerIndex, leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY,
+        processedLeftHalf, processedRightHalf;
 
-          distanceA = calculateDistance(pointsByX[0], pointsByX[1]);
-          distanceB = calculateDistance(pointsByX[0], pointsByX[2]);
-          distanceC = calculateDistance(pointsByX[1], pointsByX[2]);
-          closestDistance = Math.min(distanceA, distanceB, distanceC);
+    // if array only contains two or three points calculate the shortest point and return
+    if( pointsByX.length === 3){
 
-          if( closestDistance === distanceA ) closestPoints = [pointsByX[0], pointsByX[1]];
-          if( closestDistance === distanceB ) closestPoints = [pointsByX[0], pointsByX[2]];
-          if( closestDistance === distanceC ) closestPoints = [pointsByX[1], pointsByX[2]];
+      distanceA = calculateDistance(pointsByX[0], pointsByX[1]);
+      distanceB = calculateDistance(pointsByX[0], pointsByX[2]);
+      distanceC = calculateDistance(pointsByX[1], pointsByX[2]);
+      closestDistance = Math.min(distanceA, distanceB, distanceC);
 
-          return {
-            closestDistance: closestDistance,
-            closestPoints: closestPoints,
-            pointsByX: pointsByX,
-            pointsByY: pointsByY
-          };
+      if( closestDistance === distanceA ) closestPoints = [pointsByX[0], pointsByX[1]];
+      if( closestDistance === distanceB ) closestPoints = [pointsByX[0], pointsByX[2]];
+      if( closestDistance === distanceC ) closestPoints = [pointsByX[1], pointsByX[2]];
 
-        }else{
-          return {
-            closestDistance: calculateDistance(pointsByX[0], pointsByX[1]),
-            closestPoints: [pointsByX[0], pointsByX[1]],
-            pointsByX: pointsByX,
-            pointsByY: pointsByY
-          };
-        }
-      }
-
-      // recursively split on x until down to base case where we have only 2 points
-      // to calculate the distance between
-      centerIndex = Math.ceil(pointsByX.length / 2);
-      leftHalfByX = pointsByX.slice(0, centerIndex);
-      rightHalfByX = pointsByX.slice(centerIndex);
-
-      leftHalfByY = spliceAppropriateYs(leftHalfByX, pointsByY);
-      rightHalfByY = spliceAppropriateYs(rightHalfByX, pointsByY);
-
-      processedLeftHalf = divideOnXAndMerge(leftHalfByX, leftHalfByY);
-      processedRightHalf = divideOnXAndMerge(rightHalfByX, rightHalfByY);
-
-      return merge(processedLeftHalf, processedRightHalf);
+      return {
+        closestDistance: closestDistance,
+        closestPoints: closestPoints,
+        pointsByX: pointsByX,
+        pointsByY: pointsByY
+      };
 
     }
+    if( pointsByX.length === 2 ){
+      return {
+        closestDistance: calculateDistance(pointsByX[0], pointsByX[1]),
+        closestPoints: [pointsByX[0], pointsByX[1]],
+        pointsByX: pointsByX,
+        pointsByY: pointsByY
+      };
+    }
+
+    // recursively split on x until down to base case where we have only 2 points
+    // to calculate the distance between
+    centerIndex = Math.ceil(pointsByX.length / 2);
+    leftHalfByX = pointsByX.slice(0, centerIndex);
+    rightHalfByX = pointsByX.slice(centerIndex);
+
+    leftHalfByY = spliceAppropriateYs(leftHalfByX, pointsByY);
+    rightHalfByY = spliceAppropriateYs(rightHalfByX, pointsByY);
+
+    processedLeftHalf = divideOnXAndMerge(leftHalfByX, leftHalfByY);
+    processedRightHalf = divideOnXAndMerge(rightHalfByX, rightHalfByY);
+
+    return merge(processedLeftHalf, processedRightHalf);
   }
 
   function merge(leftHalf, rightHalf){
@@ -123,7 +122,6 @@
 
     closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf, nearestPoints);
     return closestDistanceBetweenHalves ? calculateClosestBetweenHalves: null;
-
   }
 
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
