@@ -69,18 +69,25 @@
 
     var results = {
       closestDistance: undefined,
-      closestPoints: undefined
+      closestPoints: undefined,
+      pointsByX: undefined,
+      pointsByY: undefined
     };
 
     // calculate closest distance and points already discovered in left and right halves
-    closestInOneHalf = Math.min(leftHalfByX.closestDistance, rightHalfByX.closestDistance);
-    closestBetweenHalves = calculateClosestBetweenHalves(leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY);
+    closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
+    closestBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf);
+
+
+    results.closestDistance = Math.min(closestInOneHalf, closestBetweenHalves);
+    results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
+    results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
 
 
     return results;
   }
 
-  function calculateClosestBetweenHalves(leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY){
+  function calculateClosestBetweenHalves(leftHalf, rightHalf){
 
   }
 
