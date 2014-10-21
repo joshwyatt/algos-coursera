@@ -11,7 +11,7 @@
     // begin divide part of divide and conquer for calculating distances
     function divideOnXAndMerge(points){
       // initialize variables
-      var distanceA, distanceB, distanceC;
+      var distanceA, distanceB, distanceC, closestDistance, closestPoints;
       var centerIndex, leftHalf, rightHalf, processedLeftHalf, processedRightHalf;
 
       // if array only contains two or three points
@@ -22,11 +22,22 @@
           distanceA = calculateDistance(points[0], points[1]);
           distanceB = calculateDistance(points[0], points[2]);
           distanceC = calculateDistance(points[1], points[2]);
+          closestDistance = Math.min(distanceA, distanceB, distanceC);
 
-          return Math.min(distanceA, distanceB, distanceC);
+          if( closestDistance === distanceA ) closestPoints = [points[0], points[1]];
+          if( closestDistance === distanceB ) closestPoints = [points[0], points[2]];
+          if( closestDistance === distanceC ) closestPoints = [points[1], points[2]];
 
+          return {
+            closestDistance: closestDistance,
+            closestPoints: closestPoints
+          };
+          
         }else{
-          return calculateDistance(points[0], points[1]);
+          return {
+            closestDistance: calculateDistance(points[0], points[1]),
+            closestPoints: [points[0], points[1]]
+          };
         }
       }
 
@@ -39,13 +50,13 @@
       processedLeftHalf = divideOnXAndMerge(leftHalf);
       processedRightHalf = divideOnXAndMerge(rightHalf);
 
-      merge(processedLeftHalf, processedRightHalf);
+      return merge(processedLeftHalf, processedRightHalf);
 
     }
   }
 
   function merge(leftHalf, rightHalf){
-    
+
   }
 
   function calculateDistance(pointOne, pointTwo){
