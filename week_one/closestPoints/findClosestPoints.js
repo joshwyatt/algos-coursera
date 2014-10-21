@@ -89,8 +89,11 @@
     closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
     closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints);
 
-///I AM RIGHT HERE. I JUST PASSES STUFF ALL THE WAY BACK UP. I JUST NEED TO SEE IF THERE ARE RESULTS
-// FROM THE CALLS BELOW IN WHICH CASE I NEED TO MODIFY RESULTS, OTHERWISE DON'T MODIFY IT
+
+    if( closestDistanceBetweenHalves ){
+      results.closestDistance = closestDistanceBetweenHalves.closestDistance;
+      results.closestPoints = closestDistanceBetweenHalves.closestPoints;
+    }
 
     return results;
   }
@@ -173,7 +176,7 @@
     return results;
   }
 
-  function iterateUpToSevenAway(points, currentlyShortestDistance, nearestPoints){
+  function iterateUpToSevenAway(points, closestDistance, closestPoints){
     var i, j, pointA, pointB, distance;
     var result;
 
@@ -182,10 +185,10 @@
         pointA = points[i];
         pointB = points[j];
         distance = calculateDistance(pointA, pointB);
-        if( distance < currentlyShortestDistance ){
+        if( distance < closestDistance ){
           result = {};
-          result.currentlyShortestDistance = distance;
-          result.nearestPoints = [pointA, pointB];
+          result.closestDistance = distance;
+          result.closestPoints = [pointA, pointB];
         }
       }
     }
