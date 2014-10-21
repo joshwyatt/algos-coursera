@@ -1,7 +1,6 @@
 ;(function(){
   var TwoDGraph = require('./TwoDGraph.js');
   var findClosestPoints = require('./findClosestPoints.js');
-  var bruteCalc = require('./bruteCalc.js');
 
   if( process.argv.length !== 7 ){
     console.log('Usage:');
