@@ -136,7 +136,7 @@
 
     pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
 
-    closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf, nearestPoints);
+    closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf);
     return closestDistanceBetweenHalves ? calculateClosestBetweenHalves: null;
   }
 
@@ -174,7 +174,7 @@
     return results;
   }
 
-  function iterateUpToSevenAway(points, closestDistance, closestPoints){
+  function iterateUpToSevenAway(points, closestDistance){
     var i, j, pointA, pointB, distance;
     var result;
 
