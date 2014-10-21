@@ -108,6 +108,8 @@
       return isBetweenXMinAndXMax(point, xAxisMin, xAxisMax);
     }, []);
 
+    pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
+
   }
 
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
@@ -135,6 +137,29 @@
     var distanceBetweenX = pointOne[0] - pointTwo[0];
     var distanceBetweenY = pointOne[1] - pointTwo[1];
     return Math.sqrt(Math.pow(distanceBetweenX, 2) + Math.pow(distanceBetweenY, 2));
+  }
+
+  function sortYPoints(leftYPoints, rightYPoints){
+    var sideWithLeftovers;
+    var leftIndex = 0;
+    var rightIndex = 0;
+    var results = [];
+
+    while( leftIndex < leftYPoints.length && rightIndex < rightYPoints.length ){
+      if( leftYPoints[leftIndex] < rightYPoints[rightIndex] ){
+        results.push(leftYPoints[leftIndex++]);
+      }else{
+        results.push(rightYPoints[rightIndex++]);
+      }
+    }
+    if( leftIndex === leftYPoints.length ){
+      sideWithLeftovers = rightYPoints;
+    }else{
+      sideWithLeftovers = leftYPoints;
+    }
+
+    results.concat(sideWithLeftovers);
+    return results;
   }
 
   module.exports = findClosestPoints;
