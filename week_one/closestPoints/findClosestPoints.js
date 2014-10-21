@@ -111,7 +111,8 @@
   }
 
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
-
+    var x = point[0];
+    return x > xAxisMin && x < xAxisMax;
   }
 
   function spliceAppropriateYs(xPoints, yPoints){
