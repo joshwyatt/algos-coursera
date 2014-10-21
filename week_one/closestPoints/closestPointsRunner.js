@@ -1,6 +1,7 @@
 ;(function(){
   var TwoDGraph = require('./TwoDGraph.js');
   var findClosestPoints = require('./findClosestPoints.js');
+  var bruteCalc = require('./bruteCalc.js');
 
   if( process.argv.length !== 7 ){
     console.log('Usage:');
@@ -18,5 +19,8 @@
 
   points = twoDGraph.points;
   var closestPoints = findClosestPoints(points);
-  console.log(closestPoints);
+  console.log('The closest points are: ');
+  console.log(closestPoints.closestPoints);
+  console.log('\nWith a distance apart of: ');
+  console.log(closestPoints.closestDistance);
 })();
