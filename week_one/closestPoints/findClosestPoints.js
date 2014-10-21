@@ -110,6 +110,9 @@
 
     pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
 
+    closestBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf);
+    return closestBetweenHalves;
+
   }
 
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
@@ -160,6 +163,22 @@
 
     results.concat(sideWithLeftovers);
     return results;
+  }
+
+  function iterateUpToSevenAway(points, currentlyShortestDistance){
+    var i, j, pointA, pointB, distance;
+
+    for(i = 0; i < points.length - 7; i++){
+      for(j = i; j < i + 8; j++){
+        pointA = points[i];
+        pointB = points[j];
+        distance = calculateDistance(pointA, pointB);
+        if( distance < currentlyShortestDistance ){
+          currentlyShortestDistance = distance;
+        }
+      }
+    }
+    return currentlyShortestDistance;
   }
 
   module.exports = findClosestPoints;
