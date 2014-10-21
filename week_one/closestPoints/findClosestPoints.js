@@ -80,7 +80,7 @@
 
   function merge(leftHalf, rightHalf){
     // initiate variables
-    var closestInOneHalf, closestDistanceBetweenHalves, closestPoints;
+    var closestInOneHalf, closestDistanceBetweenHalves, closestPoints, sortedPointsByY;
 
     var results = {
       closestDistance: undefined,
@@ -100,7 +100,8 @@
 
     results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
     //THESE WILL PROBABLY NEED SORTING
-    results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
+    sortedPointsByY = sortYPoints(leftHalf.pointsByY, rightHalf.pointsByY);
+    results.pointsByY = sortedPointsByY;
 
     closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, closestPoints);
 
