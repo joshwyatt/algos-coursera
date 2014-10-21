@@ -41,7 +41,6 @@
 
       merge(processedLeftHalf, processedRightHalf);
 
-      }
     }
   }
 
