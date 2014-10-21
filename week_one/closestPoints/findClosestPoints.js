@@ -32,7 +32,7 @@
             closestDistance: closestDistance,
             closestPoints: closestPoints
           };
-          
+
         }else{
           return {
             closestDistance: calculateDistance(points[0], points[1]),
@@ -56,6 +56,13 @@
   }
 
   function merge(leftHalf, rightHalf){
+    // initiate variables
+    var results = {
+      closestDistance: undefined,
+      closestPoints: undefined
+    };
+
+    // calculate closest distance and points already discovered in left and right halves
 
   }
 
