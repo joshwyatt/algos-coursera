@@ -31,13 +31,17 @@
 
           return {
             closestDistance: closestDistance,
-            closestPoints: closestPoints
+            closestPoints: closestPoints,
+            pointsByX: pointsByX,
+            pointsByY: pointsByY
           };
 
         }else{
           return {
             closestDistance: calculateDistance(pointsByX[0], pointsByX[1]),
-            closestPoints: [pointsByX[0], pointsByX[1]]
+            closestPoints: [pointsByX[0], pointsByX[1]],
+            pointsByX: pointsByX,
+            pointsByY: pointsByY
           };
         }
       }
@@ -48,8 +52,8 @@
       leftHalfByX = pointsByX.slice(0, centerIndex);
       rightHalfByX = pointsByX.slice(centerIndex);
 
-      leftHalfByY = spliceAppropriateYs(leftHalfByX);
-      rightHalfByY = spliceAppropriateYs(rightHalfByX);
+      leftHalfByY = spliceAppropriateYs(leftHalfByX, pointsByY);
+      rightHalfByY = spliceAppropriateYs(rightHalfByX, pointsByY);
 
       processedLeftHalf = divideOnXAndMerge(leftHalfByX, leftHalfByY);
       processedRightHalf = divideOnXAndMerge(rightHalfByX, rightHalfByY);
@@ -59,7 +63,7 @@
     }
   }
 
-  function merge(leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY){
+  function merge(leftHalf, rightHalf){
     // initiate variables
     var closestInOneHalf, closestBetweenHalves;
 
