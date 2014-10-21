@@ -82,13 +82,15 @@
       closestDistanceBetweenHalves = rightHalf.closestDistance;
       closestPoints = rightHalf.closestPoints;
     }
-    
+
     results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
     results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
 
     closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
     closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints);
 
+///I AM RIGHT HERE. I JUST PASSES STUFF ALL THE WAY BACK UP. I JUST NEED TO SEE IF THERE ARE RESULTS
+// FROM THE CALLS BELOW IN WHICH CASE I NEED TO MODIFY RESULTS, OTHERWISE DON'T MODIFY IT
 
     return results;
   }
