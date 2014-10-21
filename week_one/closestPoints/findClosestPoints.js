@@ -9,24 +9,25 @@
     var pointsSortedByY = mergeSortByXorY(points, 'y');
 
     // begin divide part of divide and conquer for calculating distances
-    function divideOnXAndMerge(points){
+    function divideOnXAndMerge(pointsByX, pointsByY){
       // initialize variables
-      var distanceA, distanceB, distanceC, closestDistance, closestPoints;
-      var centerIndex, leftHalf, rightHalf, processedLeftHalf, processedRightHalf;
+      var distanceA, distanceB, distanceC, closestDistance, closestPoints,
+          centerIndex, leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY,
+          processedLeftHalf, processedRightHalf;
 
       // if array only contains two or three points
-      if( points.length <= 3 ){
+      if( pointsByX.length <= 3 ){
         // calculate the shortest point and return
-        if( points.length === 3){
+        if( pointsByX.length === 3){
 
-          distanceA = calculateDistance(points[0], points[1]);
-          distanceB = calculateDistance(points[0], points[2]);
-          distanceC = calculateDistance(points[1], points[2]);
+          distanceA = calculateDistance(pointsByX[0], pointsByX[1]);
+          distanceB = calculateDistance(pointsByX[0], pointsByX[2]);
+          distanceC = calculateDistance(pointsByX[1], pointsByX[2]);
           closestDistance = Math.min(distanceA, distanceB, distanceC);
 
-          if( closestDistance === distanceA ) closestPoints = [points[0], points[1]];
-          if( closestDistance === distanceB ) closestPoints = [points[0], points[2]];
-          if( closestDistance === distanceC ) closestPoints = [points[1], points[2]];
+          if( closestDistance === distanceA ) closestPoints = [pointsByX[0], pointsByX[1]];
+          if( closestDistance === distanceB ) closestPoints = [pointsByX[0], pointsByX[2]];
+          if( closestDistance === distanceC ) closestPoints = [pointsByX[1], pointsByX[2]];
 
           return {
             closestDistance: closestDistance,
@@ -35,35 +36,64 @@
 
         }else{
           return {
-            closestDistance: calculateDistance(points[0], points[1]),
-            closestPoints: [points[0], points[1]]
+            closestDistance: calculateDistance(pointsByX[0], pointsByX[1]),
+            closestPoints: [pointsByX[0], pointsByX[1]]
           };
         }
       }
 
       // recursively split on x until down to base case where we have only 2 points
       // to calculate the distance between
-      centerIndex = Math.ceil(points.length / 2);
-      leftHalf = points.slice(0, centerIndex);
-      rightHalf = points.slice(centerIndex);
+      centerIndex = Math.ceil(pointsByX.length / 2);
+      leftHalfByX = pointsByX.slice(0, centerIndex);
+      rightHalfByX = pointsByX.slice(centerIndex);
 
-      processedLeftHalf = divideOnXAndMerge(leftHalf);
-      processedRightHalf = divideOnXAndMerge(rightHalf);
+      leftHalfByY = spliceAppropriateYs(leftHalfByX);
+      rightHalfByY = spliceAppropriateYs(rightHalfByX);
+
+      processedLeftHalf = divideOnXAndMerge(leftHalfByX, leftHalfByY);
+      processedRightHalf = divideOnXAndMerge(rightHalfByX, rightHalfByY);
 
       return merge(processedLeftHalf, processedRightHalf);
 
     }
   }
 
-  function merge(leftHalf, rightHalf){
+  function merge(leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY){
     // initiate variables
+    var closestInOneHalf, closestBetweenHalves;
+
     var results = {
       closestDistance: undefined,
       closestPoints: undefined
     };
 
     // calculate closest distance and points already discovered in left and right halves
+    closestInOneHalf = Math.min(leftHalfByX.closestDistance, rightHalfByX.closestDistance);
+    closestBetweenHalves = calculateClosestBetweenHalves(leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY);
 
+
+    return results;
+  }
+
+  function calculateClosestBetweenHalves(leftHalfByX, rightHalfByX, leftHalfByY, rightHalfByY){
+
+  }
+
+  function spliceAppropriateYs(xPoints, yPoints){
+    var appropriateYs;
+    var xs = {};
+
+    xPoints.forEach(point, storePointInHash);
+    return yPoints.reduce(isYPointInXHash, []);
+
+    function storePointInHash(point){
+      xs[point] = true;
+    }
+
+    function isYPointInXHash(yPoint){
+      return xs.hasOwnProperty(yPoint);
+    }
   }
 
   function calculateDistance(pointOne, pointTwo){
