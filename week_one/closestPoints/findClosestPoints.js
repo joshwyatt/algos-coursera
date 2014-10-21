@@ -65,7 +65,7 @@
 
   function merge(leftHalf, rightHalf){
     // initiate variables
-    var closestInOneHalf, closestBetweenHalves;
+    var closestInOneHalf, closestDistanceBetweenHalves, closestPoints;
 
     var results = {
       closestDistance: undefined,
@@ -75,11 +75,17 @@
     };
 
     // calculate closest distance and points already discovered in left and right halves
+    if( leftHalf.closestDistance < rightHalf.closestDistance ){
+      closestDistanceBetweenHalves = leftHalf.closestDistance;
+      closestPoints = leftHalf.closestPoints;
+    }else{
+      closestDistanceBetweenHalves = rightHalf.closestDistance;
+      closestPoints = rightHalf.closestPoints;
+    }
+
     closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
-    closestBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf);
+    closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf);
 
-
-    results.closestDistance = Math.min(closestInOneHalf, closestBetweenHalves);
     results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
     results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
 
@@ -110,8 +116,8 @@
 
     pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
 
-    closestBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf);
-    return closestBetweenHalves;
+    closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf);
+    return closestDistanceBetweenHalves;
 
   }
 
