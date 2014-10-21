@@ -1,48 +1,53 @@
-function mergeSortByXorY(array){
-  
-  function merge(leftHalf, rightHalf, sortByXorY){
-    var leftIndex = 0;
-    var rightIndex = 0;
-    var results = [];
-    var xOrY, halfWithLeftovers;
+;(function(){
 
-    if( sortByXorY === 'x' ){
-      xOrY = 0;
-    }else{
-      xOrY = 1;
-    }
+  function mergeSortByXorY(array, sortByXorY){
+    
+    function merge(leftHalf, rightHalf, sortByXorY){
+      var leftIndex = 0;
+      var rightIndex = 0;
+      var results = [];
+      var xOrY, halfWithLeftovers;
 
-    while( leftIndex < leftHalf.length && rightIndex < rightHalf.length ){
-
-      if( leftHalf[leftIndex][xOrY] < rightHalf[rightIndex][xOrY] ){
-        results.push(leftHalf[leftIndex++]);
+      if( sortByXorY === 'x' ){
+        xOrY = 0;
       }else{
-        results.push(rightHalf[rightIndex++]);
+        xOrY = 1;
       }
 
+      while( leftIndex < leftHalf.length && rightIndex < rightHalf.length ){
+
+        if( leftHalf[leftIndex][xOrY] < rightHalf[rightIndex][xOrY] ){
+          results.push(leftHalf[leftIndex++]);
+        }else{
+          results.push(rightHalf[rightIndex++]);
+        }
+
+      }
+
+      if( leftIndex === leftHalf.length ){
+        halfWithLeftovers = rightHalf.slice(rightIndex);
+      }else{
+        halfWithLeftovers = leftHalf.slice(leftIndex);
+      }
+
+      return results.concat(halfWithLeftovers);
     }
 
-    if( leftIndex === leftHalf.length ){
-      halfWithLeftovers = rightHalf.slice(rightIndex);
-    }else{
-      halfWithLeftovers = leftHalf.slice(leftIndex);
-    }
+    if( array.length <= 1 ) return array;
 
-    return results.concat(halfWithLeftovers);
+    var centerIndex, leftHalf, rightHalf, sortedLeftHalf, sortedRightHalf;
+
+    //split array into 2 halves
+    centerIndex = Math.ceil(array.length / 2);
+    leftHalf = array.slice(0, centerIndex);
+    rightHalf = array.slice(centerIndex);
+
+    sortedLeftHalf = mergeSortByXorY(leftHalf, sortByXorY);
+    sortedRightHalf = mergeSortByXorY(rightHalf, sortByXorY);
+
+    return merge(sortedLeftHalf, sortedRightHalf, sortByXorY);
   }
 
-  if( array.length <= 1 ) return array;
+  module.exports = mergeSortByXorY;
 
-  var centerIndex, leftHalf, rightHalf, sortedLeftHalf, sortedRightHalf;
-
-  //split array into 2 halves
-  centerIndex = Math.ceil(array.length / 2);
-  leftHalf = array.slice(0, centerIndex);
-  rightHalf = array.slice(centerIndex);
-
-  sortedLeftHalf = mergeSort(leftHalf);
-  sortedRightHalf = mergeSort(rightHalf);
-
-  return merge(sortedLeftHalf, sortedRightHalf);
-
-}
+})();
