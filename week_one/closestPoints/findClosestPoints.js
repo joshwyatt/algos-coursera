@@ -82,12 +82,12 @@
       closestDistanceBetweenHalves = rightHalf.closestDistance;
       closestPoints = rightHalf.closestPoints;
     }
+    
+    results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
+    results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
 
     closestInOneHalf = Math.min(leftHalf.closestDistance, rightHalf.closestDistance);
     closestDistanceBetweenHalves = calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, nearestPoints);
-
-    results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
-    results.pointsByY = leftHalf.pointsByY.concat(rightHalf.pointsByY);
 
 
     return results;
@@ -117,7 +117,7 @@
     pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
 
     closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf, nearestPoints);
-    return closestDistanceBetweenHalves;
+    return closestDistanceBetweenHalves ? calculateClosestBetweenHalves: null;
 
   }
 
