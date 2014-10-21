@@ -179,7 +179,7 @@
     var result;
 
     for(i = 0; i < points.length - 7; i++){
-      for(j = i; j < i + 8; j++){
+      for(j = i + 1; j < i + 8; j++){
         pointA = points[i];
         pointB = points[j];
         distance = calculateDistance(pointA, pointB);
