@@ -1,14 +1,20 @@
-function mergeSort(array){
+function mergeSortByXorY(array){
   
-  function merge(leftHalf, rightHalf){
+  function merge(leftHalf, rightHalf, sortByXorY){
     var leftIndex = 0;
     var rightIndex = 0;
     var results = [];
-    var halfWithLeftovers;
+    var xOrY, halfWithLeftovers;
+
+    if( sortByXorY === 'x' ){
+      xOrY = 0;
+    }else{
+      xOrY = 1;
+    }
 
     while( leftIndex < leftHalf.length && rightIndex < rightHalf.length ){
 
-      if( leftHalf[leftIndex] < rightHalf[rightIndex] ){
+      if( leftHalf[leftIndex][xOrY] < rightHalf[rightIndex][xOrY] ){
         results.push(leftHalf[leftIndex++]);
       }else{
         results.push(rightHalf[rightIndex++]);
