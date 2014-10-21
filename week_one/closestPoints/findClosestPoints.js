@@ -1,15 +1,13 @@
 ;(function(){
-  var mergeSortByXorY = require('./mergeSortByXorY.js');
 
   function findClosestPoints(points){
-
     // preprocess by sorting all points by x
     var pointsSortedByX = mergeSortByXorY(points, 'x');
     // preprocess by sorting all points by y
     var pointsSortedByY = mergeSortByXorY(points, 'y');
 
     // begin divide part of divide and conquer for calculating distances
-    return divideOnXAndMerge(pointsSortedByY, pointsSortedByY);
+    return divideOnXAndMerge(pointsSortedByX, pointsSortedByY);
   }
 
   function divideOnXAndMerge(pointsByX, pointsByY){
@@ -66,8 +64,8 @@
     var appropriateYs;
     var xs = {};
 
-    xPoints.forEach(point, storePointInHash);
-    return yPoints.reduce(isYPointInXHash, []);
+    xPoints.forEach(storePointInHash);
+    return yPoints.filter(isYPointInXHash, []);
 
     function storePointInHash(point){
       xs[point] = true;
@@ -109,6 +107,9 @@
     if( closestDistanceBetweenHalves ){
       results.closestDistance = closestDistanceBetweenHalves.closestDistance;
       results.closestPoints = closestDistanceBetweenHalves.closestPoints;
+    }else{
+      results.closestDistance = closestInOneHalf;
+      results.closestPoints = closestPoints;
     }
 
     return results;
@@ -119,7 +120,7 @@
         leftPointsToEvaluate, rightPointsToEvaluate, pointsToEvaluate;
 
     lastLeftIndex = leftHalf.pointsByX.length - 1;
-    verticalMiddle = leftHalf.pointsByX[lastleftIndex][0];
+    verticalMiddle = leftHalf.pointsByX[lastLeftIndex][0];
 
     xAxisMax = verticalMiddle + closestInOneHalf;
     xAxisMin = verticalMiddle - closestInOneHalf;
@@ -127,18 +128,18 @@
     leftYPoints = leftHalf.pointsByY;
     rightYPoints = rightHalf.pointsByY;
 
-    leftPointsToEvaluate = leftYPoints.reduce(function(point){
+    leftPointsToEvaluate = leftYPoints.filter(function(point){
       return isBetweenXMinAndXMax(point, xAxisMin, xAxisMax);
     }, []);
 
-    rightPointsToEvaluate = rightYPoints.reduce(function(point){
+    rightPointsToEvaluate = rightYPoints.filter(function(point){
       return isBetweenXMinAndXMax(point, xAxisMin, xAxisMax);
     }, []);
 
-    pointsToEvaluate = sortYPoints(leftYPoints, rightYPoints);
+    pointsToEvaluate = sortYPoints(leftPointsToEvaluate, rightPointsToEvaluate);
 
     closestDistanceBetweenHalves = iterateUpToSevenAway(pointsToEvaluate, closestInOneHalf);
-    return closestDistanceBetweenHalves ? calculateClosestBetweenHalves: null;
+    return closestDistanceBetweenHalves ? closestDistanceBetweenHalves: null;
   }
 
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
@@ -159,19 +160,19 @@
     var results = [];
 
     while( leftIndex < leftYPoints.length && rightIndex < rightYPoints.length ){
-      if( leftYPoints[leftIndex] < rightYPoints[rightIndex] ){
+      if( leftYPoints[leftIndex][1] < rightYPoints[rightIndex][1] ){
         results.push(leftYPoints[leftIndex++]);
       }else{
         results.push(rightYPoints[rightIndex++]);
       }
     }
     if( leftIndex === leftYPoints.length ){
-      sideWithLeftovers = rightYPoints;
+      sideWithLeftovers = rightYPoints.slice(rightIndex);
     }else{
-      sideWithLeftovers = leftYPoints;
+      sideWithLeftovers = leftYPoints.slice(leftIndex);
     }
 
-    results.concat(sideWithLeftovers);
+    results = results.concat(sideWithLeftovers);
     return results;
   }
 
@@ -179,18 +180,20 @@
     var i, j, pointA, pointB, distance;
     var result;
 
-    for(i = 0; i < points.length - 7; i++){
-      for(j = i + 1; j < i + 8; j++){
+    for(i = 0; i < points.length - 1; i++){
+      for(j = i + 1; j < points.length && j < i + 8; j++){
         pointA = points[i];
         pointB = points[j];
         distance = calculateDistance(pointA, pointB);
         if( distance < closestDistance ){
+          closestDistance = distance;
           result = {};
           result.closestDistance = distance;
           result.closestPoints = [pointA, pointB];
         }
       }
     }
+
     return result ? result : null;
   }
 

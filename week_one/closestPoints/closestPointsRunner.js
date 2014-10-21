@@ -17,5 +17,6 @@
   var twoDGraph = new TwoDGraph(xMin, yMin, xMax, yMax, numberOfPoints);
 
   points = twoDGraph.points;
-  findClosestPoints(points);
+  var closestPoints = findClosestPoints(points);
+  console.log(closestPoints);
 })();
