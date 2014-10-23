@@ -1,3 +1,6 @@
+// This is an implementation of an algorithm to find the two closest points on a two dimension graph
+// that runs in O(nlogn) time, based on an algorithms course taught by Tim Roughgarden by way of Coursera
+
 ;(function(){
 
   var mergeSortByXorY = require('./mergeSortByXorY.js');
