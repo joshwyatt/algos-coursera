@@ -3,8 +3,11 @@
 
 ;(function(){
 
+  // This O(nlogn) implentation requires two sets of coordinates, one sorted by x and the other by y.
+  // Here we use a slightly modified merge sort to sort by either x or y
   var mergeSortByXorY = require('./mergeSortByXorY.js');
 
+  // This is the main function which will call all the others
   function findClosestPoints(points){
     // preprocess by sorting all points by x
     var pointsSortedByX = mergeSortByXorY(points, 'x');
@@ -14,7 +17,7 @@
     // begin divide part of divide and conquer for calculating distances
     return divideOnXAndMerge(pointsSortedByX, pointsSortedByY);
   }
-
+  // This is the main subroutine...the 'conquer' of the 'divide and conquer'
   function divideOnXAndMerge(pointsByX, pointsByY){
     // initialize variables
     var distanceA, distanceB, distanceC, closestDistance, closestPoints,
@@ -62,9 +65,12 @@
     processedLeftHalf = divideOnXAndMerge(leftHalfByX, leftHalfByY);
     processedRightHalf = divideOnXAndMerge(rightHalfByX, rightHalfByY);
 
+
     return merge(processedLeftHalf, processedRightHalf);
   }
 
+  // This function returns the set of sorted y coordinates that are the same as the current set of
+  // coordinates sorted by x
   function spliceAppropriateYs(xPoints, yPoints){
     var appropriateYs;
     var xs = {};
@@ -81,6 +87,9 @@
     }
   }
 
+  // This function discovers whether or not there is a set of points split between the right and
+  // left halves that are closer together that the closest points on the left half and the closest
+  // points on the right half
   function merge(leftHalf, rightHalf){
     // initiate variables
     var closestInOneHalf, closestDistanceBetweenHalves, closestPoints, sortedPointsByY;
@@ -102,7 +111,6 @@
     }
 
     results.pointsByX = leftHalf.pointsByX.concat(rightHalf.pointsByX);
-    //THESE WILL PROBABLY NEED SORTING
     sortedPointsByY = sortYPoints(leftHalf.pointsByY, rightHalf.pointsByY);
     results.pointsByY = sortedPointsByY;
 
@@ -120,6 +128,8 @@
     return results;
   }
 
+  // This is a helper function for `merge` that organizes the sets for potential discovery of points
+  // split between the two sides that are closest
   function calculateClosestBetweenHalves(leftHalf, rightHalf, closestInOneHalf, closestPoints){
     var lastLeftIndex, verticalMiddle, xAxisMax, xAxisMin, leftYPoints, rightYPoints,
         leftPointsToEvaluate, rightPointsToEvaluate, pointsToEvaluate;
@@ -147,17 +157,22 @@
     return closestDistanceBetweenHalves ? closestDistanceBetweenHalves: null;
   }
 
+  // This helper function filters for only the points that are potentially closer than the already
+  // closest calculation by setting a min and max x value and filtering for the points within them
   function isBetweenXMinAndXMax(point, xAxisMin, xAxisMax){
     var x = point[0];
     return x > xAxisMin && x < xAxisMax;
   }
 
+  // This helper function calculates the distance between two points on a 2d graph
   function calculateDistance(pointOne, pointTwo){
     var distanceBetweenX = pointOne[0] - pointTwo[0];
     var distanceBetweenY = pointOne[1] - pointTwo[1];
     return Math.sqrt(Math.pow(distanceBetweenX, 2) + Math.pow(distanceBetweenY, 2));
   }
 
+  // This function merges two point sets sorted by y coordinates into a single set sorted by y
+  // coordinates
   function sortYPoints(leftYPoints, rightYPoints){
     var sideWithLeftovers;
     var leftIndex = 0;
@@ -181,6 +196,8 @@
     return results;
   }
 
+  // This function iterates appropriately through the points, sorted by y, that are potentially closer
+  // together than any point on either half that is currently closest
   function iterateUpToSevenAway(points, closestDistance){
     var i, j, pointA, pointB, distance;
     var result;
