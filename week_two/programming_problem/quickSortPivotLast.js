@@ -3,11 +3,11 @@
 
   module.exports.numberOfComparisons = 0;
 
-  module.exports.quickSortPivotFirst = function(array){
+  module.exports.quickSortPivotLast = function(array){
     if( array.length === 1 || array.length === 0 ) return array;
     var pivotIndex, pivot, i, j, leftHalf, rightHalf;
 
-    pivotIndex = 0;
+    pivotIndex = array.length - 1;
     pivot = +array[pivotIndex];
     array = swap(array, 0, pivotIndex);
 
@@ -19,7 +19,7 @@
     rightHalf = array.slice(i);
     module.exports.numberOfComparisons += leftHalf.length + rightHalf.length;
 
-    return module.exports.quickSortPivotFirst(leftHalf).concat(array[i - 1]).concat(module.exports.quickSortPivotFirst(rightHalf));
+    return module.exports.quickSortPivotLast(leftHalf).concat(array[i - 1]).concat(module.exports.quickSortPivotLast(rightHalf));
 
     function getAPivot(length){
       return Math.floor(Math.random() * length);
