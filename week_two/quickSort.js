@@ -1,23 +1,15 @@
 function quickSort(array){
+  if( array.length === 1 || array.length === 0 ) return array;
   var pivotIndex, pivot, i, j;
 
-  // get a pivot
   pivotIndex = getAPivot(array.length);
   pivot = array[pivotIndex];
-  // swap it to the beginning
-  swap(array, 0, pivot);
+  array = swap(array, 0, pivotIndex);
 
-  // initialize i(the above/below divider) and j(the seen/unseen divider) to 1
   i = j = 1;
   array.forEach(sortAroundPivot);
-  // for j to array.length
-    // if array[j] < pivot
-      // swap array[j] with array[i]
-      // i++
+  array = swap(array, 0, i - 1);
 
-  // swap pivot with array[i - 1]
-  swap(array, 0, i - 1);
-  //return quickSort(array.slice(0, i - 1)).concat(array[i - 1]).concat(quickSort(array.slice(i)));
   return quickSort(array.slice(0, i - 1)).concat(array[i - 1]).concat(quickSort(array.slice(i)));
 
   function getAPivot(length){
@@ -36,8 +28,9 @@ function quickSort(array){
 
   function sortAroundPivot(item, index){
     if( item < pivot ){
-      swap(array, index, i);
+      array = swap(array, index, i);
       i++;
     }
   }
+
 }
