@@ -4,6 +4,7 @@
   var fs = require('fs');
   var quickSortPivotFirst = require('./quickSortPivotFirst.js');
   var quickSortPivotLast = require('./quickSortPivotLast.js');
+  var quickSortPivotMedian = require('./quickSortPivotMedian.js');
 
   var file = process.argv[2];
 
@@ -22,6 +23,11 @@
     var pivotLastNumberOfComparisons = quickSortPivotLast.numberOfComparisons;
     console.log(pivotLastResult.slice(0, 15));
     console.log(pivotLastNumberOfComparisons);
+
+    var pivotMedianResult = quickSortPivotMedian.quickSortPivotMedian(array);
+    var pivotMedianNumberOfComparisons = quickSortPivotMedian.numberOfComparisons;
+    console.log(pivotMedianResult.slice(0, 15));
+    console.log(pivotMedianNumberOfComparisons);
   });
 
 })();
