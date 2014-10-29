@@ -1,7 +1,7 @@
 ;(function(){
 
   function rSelect(array, orderStatistic, lowerIndex, upperIndex){
-    var length, pivotIndex, pivot, partition, partitionIndex;
+    var length, pivotIndex, pivot, partitionDetails, partitionIndex;
 
     lowerIndex = lowerIndex || 0;
     upperIndex = upperIndex || array.length - 1;
@@ -9,9 +9,9 @@
     length = upperIndex - lowerIndex + 1;
     pivotIndex = chooseRandomPivotIndex(length) + lowerIndex;
     pivot = array[pivotIndex];
-    partition = partitionAroundPivot(array, pivot, pivotIndex);
-    array = partition.array;
-    partitionIndex = partition.partitionIndex;
+    partitionDetails = partitionAroundPivot(array, pivot, pivotIndex);
+    array = partitionDetails.array;
+    partitionIndex = partitionDetails.partitionIndex;
 
     if( partitionIndex === orderStatistic ){
       return pivot;
@@ -53,8 +53,6 @@
     return array;
   }
 
-  var array = [3,9,5,7,4,1,0];
-  console.log(rSelect(array, 6));
-
-  // module.exports = rSelect;
+  module.exports = rSelect;
+  
 })();
