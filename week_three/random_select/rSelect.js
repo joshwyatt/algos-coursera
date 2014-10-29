@@ -1,7 +1,6 @@
 ;(function(){
 
   function rSelect(array, orderStatistic, lowerIndex, upperIndex){
-    // debugger;
     var length, pivotIndex, pivot, partition, partitionIndex;
 
     lowerIndex = lowerIndex || 0;
