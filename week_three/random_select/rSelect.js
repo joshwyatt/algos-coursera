@@ -7,6 +7,9 @@
     upperIndex = upperIndex || array.length - 1;
 
     length = upperIndex - lowerIndex + 1;
+
+    if( length === 1 ) return upperIndex;
+    
     pivotIndex = chooseRandomPivotIndex(length) + lowerIndex;
     pivot = array[pivotIndex];
     partitionDetails = partitionAroundPivot(array, pivot, pivotIndex);
@@ -54,5 +57,5 @@
   }
 
   module.exports = rSelect;
-  
+
 })();
