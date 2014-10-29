@@ -1,18 +1,18 @@
 function quickSort(array){
   if( array.length === 1 || array.length === 0 ) return array;
-  var pivotIndex, pivot, i, j;
+  var pivotIndex, pivot, i;
 
-  pivotIndex = getAPivot(array.length);
+  pivotIndex = getAPivotIndex(array.length);
   pivot = array[pivotIndex];
   array = swap(array, 0, pivotIndex);
 
-  i = j = 1;
+  i = 1;
   array.forEach(sortAroundPivot);
   array = swap(array, 0, i - 1);
 
   return quickSort(array.slice(0, i - 1)).concat(array[i - 1]).concat(quickSort(array.slice(i)));
 
-  function getAPivot(length){
+  function getAPivotIndex(length){
     return Math.floor(Math.random() * length);
   }
 
@@ -34,3 +34,6 @@ function quickSort(array){
   }
 
 }
+
+var a = [1,5,3,5,7,8,9,3,1];
+show(quickSort(a));
