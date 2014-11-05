@@ -23,8 +23,5 @@
         }
       }
     });
-
-    console.log('keys length: ' + Object.keys(formattedAdjacencyList).length);
-    console.log(formattedAdjacencyList['5']);
   });
 })();
