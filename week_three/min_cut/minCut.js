@@ -1,4 +1,4 @@
-;function(){
+;(function(){
   'use strict';
   function minCut(adjacencyList){
 
@@ -56,4 +56,4 @@
     }
   }
   module.exports = minCut;
-}();
+})();

@@ -11,7 +11,6 @@
 
     var result = countInversions(array);
     console.log('The number of inversions for the array made out of %s is: %d', file, result);
-    // console.log(result);
   });
 
 })();
