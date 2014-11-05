@@ -1,4 +1,5 @@
 ;function(){
+  'use strict';
   function minCut(adjacencyList){
 
     while( Object.keys(adjacencyList).length > 2 ){
