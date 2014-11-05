@@ -23,7 +23,7 @@
         randomIndex -= adjacencyList[keys[ticker++]].length;
       }
       // return edge at index of randomIndex of this property
-      return [+keys[ticker], adjacencyList[keys[ticker]][randomIndex]];
+      return [keys[ticker], adjacencyList[keys[ticker]][randomIndex]];
     }
 
     //how many edges are there.
@@ -44,6 +44,8 @@
       //delete vertexTwo
       delete adjacencyList[vertexTwo];
       //iterate over edges at vertexOne and delete any ref to vertexOne or vertexTwo
+      // if(!adjacencyList[vertexOne])
+      //   debugger;
       adjacencyList[vertexOne] = adjacencyList[vertexOne].filter(function(vertex){
         return !(vertex === vertexOne || vertex === vertexTwo);
       });
@@ -55,5 +57,6 @@
       }
     }
   }
+
   module.exports = minCut;
 })();

@@ -4,6 +4,7 @@
   var minCut = require('./minCut.js');
   var adjacencyList = process.argv[2];
 
+  var smallestResult;
   var formattedAdjacencyList = {};
 
   fs.readFile(adjacencyList, function(err, data){
@@ -23,5 +24,23 @@
         }
       }
     });
+
+    for(var i = 0; i < 3000; i++){
+      var copyOfFormattedAdjacencyList = copyFormattedAdjacencyList(formattedAdjacencyList);
+      var result = minCut(copyOfFormattedAdjacencyList);
+      if( !smallestResult || result < smallestResult ){
+        smallestResult = result;
+        console.log('smallestResult: ' + smallestResult);
+      }
+    }
   });
+
+  function copyFormattedAdjacencyList(formattedAdjacencyList){
+    var copy = {};
+    for(var k in formattedAdjacencyList){
+      copy[k] = formattedAdjacencyList[k];
+    }
+    return copy;
+  }
+
 })();
