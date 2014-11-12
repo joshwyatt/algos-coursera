@@ -30,9 +30,10 @@
       var result = minCut(copyOfFormattedAdjacencyList);
       if( !smallestResult || result < smallestResult ){
         smallestResult = result;
-        console.log('smallestResult: ' + smallestResult);
+        console.log('The smallest result so far is: ' + smallestResult);
       }
     }
+    console.log('Mincut is complete and the smallest result is: ' + smallestResult);
   });
 
   function copyFormattedAdjacencyList(formattedAdjacencyList){

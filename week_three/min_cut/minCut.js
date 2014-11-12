@@ -16,7 +16,6 @@
       var randomIndex = Math.floor(Math.random() * numberOfEdges);
       var keys = Object.keys(adjacencyList);
       var ticker = 0;
-      // debugger;
       //while the current property length is greater than random index
       while( randomIndex > adjacencyList[keys[ticker]].length - 1 ){
         // decrement randomIndex and go to next property
@@ -45,7 +44,6 @@
       delete adjacencyList[vertexTwo];
       //iterate over edges at vertexOne and delete any ref to vertexOne or vertexTwo
       // if(!adjacencyList[vertexOne])
-      //   debugger;
       adjacencyList[vertexOne] = adjacencyList[vertexOne].filter(function(vertex){
         return !(vertex === vertexOne || vertex === vertexTwo);
       });
