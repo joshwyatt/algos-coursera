@@ -41,8 +41,16 @@ fs.readFile(directedGraphFile, function(err, data){
       depthFirstSearchPassOne(i);
     }
   }
+  console.log('------> completed first depth first pass');
+  console.log(Object.keys(nodesMappedByFinishingTime).length);
 
-  console.log('still alive');
+  for(var j = 875714; j > 0; j--){
+    //if node hasn't been visited yet
+    if( !alreadyVisitedNodesSecondPass[j] ){
+      depthFirstSearchPassTwo(j);
+    }
+  }
+
   function depthFirstSearchPassOne(node){
     nodes = [];
     nodes.push(node);
@@ -74,40 +82,23 @@ fs.readFile(directedGraphFile, function(err, data){
         }
       }
     }
-
-    // var nodes = [];
-    // nodes.push(node);
-    // while( nodes ){
-    //   node = nodes.pop();
-    //   //if node hasn't been visited yet
-    //   if( !alreadyVisitedNodesFirstPass[node] ){
-    //     //add it to visited
-    //     alreadyVisitedNodesFirstPass[node] = true;
-    //     //for each edge
-    //     if( reversedDirectedGraph[node] ){
-    //       reversedDirectedGraph[node].forEach(function(attachedNode){
-    //         //dfs(edge)
-    //         nodes.push(attachedNode);
-    //       });
-    //     }
-    // }
-    //   //nodesMappedByFinishingTime[finishingTimeCounter++] = node;
-    //   nodesMappedByFinishingTime[finishingTimeCounter++] = node;
-    // }
   }
 
-  //PASS 2
-  //iterate backwards through mapping of nodes by finishing time
-    //if node hasn't been visited
-      //if SCCSize !== 0
-        //SCCSizes.push(SCCSize);
-        //SCCSize = 0;
-      //dfs(node):
-        //if node hasn't been visited yet
-          //add it to visited
-          //SCCSize++;
-          //for each edge
-            //dfs(edge)
+  function depthFirstSearchPassTwo(node){
+    var nodes = [];
+    nodes.push(node);
+
+    while( nodes.length ){
+      var currentNode = nodes[nodes.length - 1];
+      if( alreadyVisitedNodesFirstPass[currentNode] ){
+        nodes.pop();
+      }
+    }
+
+
+
+  }
+
 });
 
 
