@@ -32,23 +32,39 @@ fs.readFile(directedGraphFile, function(err, data){
   var alreadyVisitedNodesFirstPass = {};
   var alreadyVisitedNodesSecondPass = {};
   var SCCSizes = [];
-  var SCCSize = 0;
   //PASS 1
   //iterate backwards through reversed graph object
-  for(var i = 875714; i > 0; i--){
+  // for(var i = 875714; i > 0; i--){
+  for(var i = 12; i > 0; i--){
     //if node hasn't been visited yet
     if( !alreadyVisitedNodesFirstPass[i] ){
       depthFirstSearchPassOne(i);
     }
   }
   console.log('------> completed first depth first pass');
-  console.log(Object.keys(nodesMappedByFinishingTime).length);
 
-  for(var j = 875714; j > 0; j--){
-    //if node hasn't been visited yet
-    if( !alreadyVisitedNodesSecondPass[j] ){
-      depthFirstSearchPassTwo(j);
+  // for(var j = 875714; j > 0; j--){
+  for(var j = 12; j > 0; j--){
+    debugger;
+    if( nodesMappedByFinishingTime[j] ){
+      var nodeByFinishingTime = nodesMappedByFinishingTime[j]
+      //if node hasn't been visited yet
+      if( !alreadyVisitedNodesSecondPass[j] ){
+        depthFirstSearchPassTwo(j);
+      }
     }
+  }
+  console.log('------> completed second depth first pass');
+
+  SCCSizes = SCCSizes.sort(function(a,b){
+    return b - a;
+  });
+  if( SCCSizes.length >= 5 ){
+    console.log(SCCSizes.slice(0, 5));
+    return SCCSizes.slice(0, 5);
+  }else{
+    console.log(SCCSizes);
+    return SCCSizes;
   }
 
   function depthFirstSearchPassOne(node){
@@ -74,7 +90,11 @@ fs.readFile(directedGraphFile, function(err, data){
         //if no viable children
         if( !connectedNodesNotYetExplored || !connectedNodesNotYetExplored.length ){
           //pop it off and give it a number
-          nodesMappedByFinishingTime[finishingTimeCounter++] = nodes.pop();
+          if( reversedDirectedGraph[currentNode] ){
+            nodesMappedByFinishingTime[finishingTimeCounter++] = nodes.pop();
+          }else{
+            nodes.pop();
+          }
         }else{
           connectedNodesNotYetExplored.forEach(function(nodeToExplore){
             nodes.push(nodeToExplore);
@@ -85,18 +105,33 @@ fs.readFile(directedGraphFile, function(err, data){
   }
 
   function depthFirstSearchPassTwo(node){
+    var SCCSize = 1;
     var nodes = [];
     nodes.push(node);
 
     while( nodes.length ){
       var currentNode = nodes[nodes.length - 1];
-      if( alreadyVisitedNodesFirstPass[currentNode] ){
+      if( alreadyVisitedNodesSecondPass[currentNode] ){
         nodes.pop();
+      }else{
+        alreadyVisitedNodesSecondPass[currentNode] = true;
+
+        if( directedGraph[currentNode] ){
+          var connectedNodesNotYetExplored = directedGraph[currentNode].filter(function(possibleNode){
+            return !alreadyVisitedNodesSecondPass[possibleNode];
+          });
+        }
+        if( !connectedNodesNotYetExplored || !connectedNodesNotYetExplored.length ){
+          nodes.pop();
+        }else{
+          connectedNodesNotYetExplored.forEach(function(nodeToExplore){
+            nodes.push(nodeToExplore);
+            SCCSize++;
+          });
+        }
       }
     }
-
-
-
+    SCCSizes.push(SCCSize);
   }
 
 });
