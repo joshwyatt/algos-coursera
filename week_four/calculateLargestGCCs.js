@@ -35,7 +35,7 @@ fs.readFile(directedGraphFile, function(err, data){
   //PASS 1
   //iterate backwards through reversed graph object
   // for(var i = 875714; i > 0; i--){
-  for(var i = 4; i > 0; i--){
+  for(var i = 12; i > 0; i--){
     //if node hasn't been visited yet
     if( !alreadyVisitedNodesFirstPass[i] ){
       depthFirstSearchPassOne(i);
@@ -44,7 +44,7 @@ fs.readFile(directedGraphFile, function(err, data){
   console.log('------> completed first depth first pass');
 
   // for(var j = 875714; j > 0; j--){
-  for(var j = 4; j > 0; j--){
+  for(var j = 12; j > 0; j--){
     if( nodesMappedByFinishingTime[j] ){
       var nodeByFinishingTime = nodesMappedByFinishingTime[j]
       //if node hasn't been visited yet
@@ -67,7 +67,6 @@ fs.readFile(directedGraphFile, function(err, data){
   }
 
   function depthFirstSearchPassOne(node){
-    // debugger;
     nodesGivenTime = {};
     nodes = [];
     nodes.push(node);
@@ -102,7 +101,11 @@ fs.readFile(directedGraphFile, function(err, data){
               nodesGivenTime[possibleNodeToCount] = true;
             }
           }else{
-            nodes.pop();
+            var possibleNodeToCount = nodes.pop();
+            if( !nodesGivenTime[possibleNodeToCount] ){
+              nodesMappedByFinishingTime[finishingTimeCounter++] = possibleNodeToCount;
+              nodesGivenTime[possibleNodeToCount] = true;
+            }
           }
         }else{
           connectedNodesNotYetExplored.forEach(function(nodeToExplore){
