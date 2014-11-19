@@ -35,7 +35,7 @@ fs.readFile(directedGraphFile, function(err, data){
   //PASS 1
   //iterate backwards through reversed graph object
   // for(var i = 875714; i > 0; i--){
-  for(var i = 12; i > 0; i--){
+  for(var i = 4; i > 0; i--){
     //if node hasn't been visited yet
     if( !alreadyVisitedNodesFirstPass[i] ){
       depthFirstSearchPassOne(i);
@@ -44,13 +44,12 @@ fs.readFile(directedGraphFile, function(err, data){
   console.log('------> completed first depth first pass');
 
   // for(var j = 875714; j > 0; j--){
-  for(var j = 12; j > 0; j--){
-    debugger;
+  for(var j = 4; j > 0; j--){
     if( nodesMappedByFinishingTime[j] ){
       var nodeByFinishingTime = nodesMappedByFinishingTime[j]
       //if node hasn't been visited yet
-      if( !alreadyVisitedNodesSecondPass[j] ){
-        depthFirstSearchPassTwo(j);
+      if( !alreadyVisitedNodesSecondPass[nodeByFinishingTime] ){
+        depthFirstSearchPassTwo(nodeByFinishingTime);
       }
     }
   }
@@ -68,6 +67,8 @@ fs.readFile(directedGraphFile, function(err, data){
   }
 
   function depthFirstSearchPassOne(node){
+    // debugger;
+    nodesGivenTime = {};
     nodes = [];
     nodes.push(node);
     //while nodes
@@ -77,7 +78,11 @@ fs.readFile(directedGraphFile, function(err, data){
       //if current node has been visited
       if( alreadyVisitedNodesFirstPass[currentNode] ){
         //pop it off and give it number++
-        nodesMappedByFinishingTime[finishingTimeCounter++] = nodes.pop();
+        var possibleNodeToCount = nodes.pop();
+        if( !nodesGivenTime[possibleNodeToCount] ){
+          nodesMappedByFinishingTime[finishingTimeCounter++] = possibleNodeToCount;
+          nodesGivenTime[possibleNodeToCount] = true;
+        }
       }else{
         //mark current node as visited
         alreadyVisitedNodesFirstPass[currentNode] = true;
@@ -91,7 +96,11 @@ fs.readFile(directedGraphFile, function(err, data){
         if( !connectedNodesNotYetExplored || !connectedNodesNotYetExplored.length ){
           //pop it off and give it a number
           if( reversedDirectedGraph[currentNode] ){
-            nodesMappedByFinishingTime[finishingTimeCounter++] = nodes.pop();
+            var possibleNodeToCount = nodes.pop();
+            if( !nodesGivenTime[possibleNodeToCount] ){
+              nodesMappedByFinishingTime[finishingTimeCounter++] = possibleNodeToCount;
+              nodesGivenTime[possibleNodeToCount] = true;
+            }
           }else{
             nodes.pop();
           }
@@ -105,9 +114,11 @@ fs.readFile(directedGraphFile, function(err, data){
   }
 
   function depthFirstSearchPassTwo(node){
+    var nodesInStack = {};
     var SCCSize = 1;
     var nodes = [];
     nodes.push(node);
+    nodesInStack[node] = true;
 
     while( nodes.length ){
       var currentNode = nodes[nodes.length - 1];
@@ -125,8 +136,11 @@ fs.readFile(directedGraphFile, function(err, data){
           nodes.pop();
         }else{
           connectedNodesNotYetExplored.forEach(function(nodeToExplore){
-            nodes.push(nodeToExplore);
-            SCCSize++;
+            if( !nodesInStack[nodeToExplore] ){
+              nodesInStack[nodeToExplore] = true;
+              nodes.push(nodeToExplore);
+              SCCSize++;
+            }
           });
         }
       }
